@@ -7,7 +7,7 @@
 
 
     <router-link :to="{name: 'cart', params: {cart_data: CART}}">
-     <!-- <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div> -->
+    <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div> 
     </router-link>
     <h1>Catalog</h1>
     <div class="filters">

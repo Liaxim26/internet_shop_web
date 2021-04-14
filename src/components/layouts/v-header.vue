@@ -1,20 +1,5 @@
 <template>
   <div class='v-header'>
-    <div class="top-header">
-      <div d-flex flex-column flex-md-row align-items-center>
-        <nav class="my-0 mr-md-auto font-weight-normal">
-          <a class="p-2 text-white font-weight-light" href="#">О компании</a>
-          <a class="p-2 text-white font-weight-light" href="#">Бренды</a>
-          <a class="p-2 text-white font-weight-light" href="#">Доставка</a>
-          <a class="p-2 text-white font-weight-light" href="#">Оплата</a>
-          <a class="p-2 text-white font-weight-light" href="#">Контакты</a>
-        </nav>
-        <a id="login" class="mt-1 btn btn-outline-light" href="#">Войти</a>
-      </div>
-    </div>
-    
-
-   <!-- <div>
     <router-link :to="{name: 'mainPage'}">
       <img src="../../assets/logo.png" alt="">
     </router-link>
@@ -30,8 +15,7 @@
         <i class="material-icons" @click="clearSearchField">cancel</i>
       </button>
     </div>
-    </div> -->
-  </div>
+    </div> 
 </template>
 
 <script>
@@ -72,14 +56,7 @@
 </script>
 
 <style lang="scss">
-  .top-header {
-    height: 49px;
-    background-color: #202020;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding: 10px;
-  } 
- /* .v-header {
+  .v-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -108,5 +85,5 @@
       background: transparent;
       border: none;
     }
-  }*/
+  }
 </style>
