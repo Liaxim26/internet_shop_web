@@ -7,7 +7,7 @@
 
 
     <router-link :to="{name: 'cart', params: {cart_data: CART}}">
-    <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div> 
+      <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div> 
     </router-link>
     <h1>Catalog</h1>
     <div class="filters">
@@ -88,11 +88,13 @@
         'SEARCH_VALUE'
       ]),
       filteredProducts() {
-        if (this.sortedProducts.length) {
-          return this.sortedProducts
-        } else {
+        // if (this.sortedProducts.length) {
+        //   return this.sortedProducts
+        // } else {
+          console.log(this.PRODUCTS)
+          console.log('products')
           return this.PRODUCTS
-        }
+        //}
       },
     },
     methods: {
@@ -114,15 +116,15 @@
       sortByCategories(category) {
         let vm = this;
         this.sortedProducts = [...this.PRODUCTS]
-        this.sortedProducts = this.sortedProducts.filter(function (item) {
-          return item.price >= vm.minPrice && item.price <= vm.maxPrice
-        })
-        if (category) {
-          this.sortedProducts = this.sortedProducts.filter(function (e) {
-            vm.selected === category.name;
-            return e.category === category.name
-          })
-        }
+        // this.sortedProducts = this.sortedProducts.filter(function (item) {
+        //   return item.price >= vm.minPrice && item.price <= vm.maxPrice
+        // })
+        // if (category) {
+        //   this.sortedProducts = this.sortedProducts.filter(function (e) {
+        //     vm.selected === category.name;
+        //     return e.category === category.name
+        //   })
+        // }
       },
       addToCart(data) {
         this.ADD_TO_CART(data)
@@ -135,13 +137,15 @@
       },
       sortProductsBySearchValue(value) {
         this.sortedProducts = [...this.PRODUCTS]
-        if (value) {
-          this.sortedProducts = this.sortedProducts.filter(function (item) {
-            return item.name.toLowerCase().includes(value.toLowerCase())
-          })
-        } else {
-          this.sortedProducts = this.PRODUCTS;
-        }
+        console.log('sorted')
+        console.log(this.sortedProducts)
+        // if (value) {
+        //   this.sortedProducts = this.sortedProducts.filter(function (item) {
+        //     return item.name.toLowerCase().includes(value.toLowerCase())
+        //   })
+        // } else {
+        //   this.sortedProducts = this.PRODUCTS;
+        // }
       }
     },
     watch: {
@@ -153,6 +157,7 @@
       this.GET_PRODUCTS_FROM_API()
         .then((response) => {
           if (response.data) {
+            console.log(response)
             this.sortByCategories()
             this.sortProductsBySearchValue(this.SEARCH_VALUE)
           }

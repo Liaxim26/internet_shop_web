@@ -8,7 +8,8 @@
         @closePopup="closeInfoPopup"
         @rightBtnAction="addToCart"
     >
-      <img class="v-catalog-item__image" :src=" require('../../assets/images/' + product_data.image) " alt="img">
+      <!-- <img class="v-catalog-item__image" :src=" require('../../assets/images/' + product_data.image) " alt="img"> -->
+      <img class="v-catalog-item__image" :src="product_data.image" alt="img">
       <div>
         <p class="v-catalog-item__name">{{product_data.name}}</p>
         <p class="v-catalog-item__price">Price: {{product_data.price | toFix | formattedPrice}} Р.</p>
@@ -17,7 +18,8 @@
     </v-popup>
 
 
-    <img class="v-catalog-item__image" :src=" require('../../assets/images/' + product_data.image) " alt="img" @click="productClick">
+    <!-- <img class="v-catalog-item__image" :src=" require('../../assets/images/' + product_data.image) " alt="img" @click="productClick"> -->
+    <img class="v-catalog-item__image" :src="product_data.image" alt="img" @click="productClick">
     <p class="v-catalog-item__name">{{product_data.name}}</p>
     <p class="v-catalog-item__price">Price: {{product_data.price | toFix | formattedPrice}}</p>
     <button
@@ -79,6 +81,7 @@
     },
     mounted() {
       this.$set(this.product_data, 'quantity', 1)
+      console.log(this.product_data)
     }
   }
 </script>

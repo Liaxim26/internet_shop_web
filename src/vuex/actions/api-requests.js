@@ -2,12 +2,17 @@ import axios from "axios";
 
 export default {
   GET_PRODUCTS_FROM_API({commit}) {
-    return axios('http://localhost:3000/products', {
-      method: "GET"
+    return axios.get("http://rest-api:8085/api/products", {
+      params: {
+        page: 1,
+        pageSize: 8,
+        category: "pod"
+      }
     })
-      .then((products) => {
-        commit('SET_PRODUCTS_TO_STATE', products.data);
-        return products;
+      .then((response) => {
+        console.log(response.data.products)
+        commit('SET_PRODUCTS_TO_STATE', response.data.products);
+        return response;
       })
       .catch((error) => {
         console.log(error)

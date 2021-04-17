@@ -9,6 +9,7 @@ export default  {
     return state.isDesktop;
   },
   PRODUCTS(state) {
+    console.log(state)
     return state.products;
   },
   CART(state) {
