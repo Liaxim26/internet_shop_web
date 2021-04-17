@@ -18,5 +18,5 @@ export default {
         console.log(error)
         return error;
       })
-  },
+  }
 }

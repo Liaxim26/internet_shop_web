@@ -4,10 +4,13 @@ import store from './vuex/store'
 import router from "./router/router";
 import './assets/styles/styles.scss'
 import 'material-design-icons-iconfont'
+import Vuetify from 'vuetify'
 
 Vue.config.productionTip = false
+Vue.use(Vuetify)
 
 new Vue({
+  vuetify: new Vuetify(),
   render: h => h(App),
   store,
   router

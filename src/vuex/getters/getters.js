@@ -14,5 +14,11 @@ export default  {
   },
   CART(state) {
     return state.cart;
+  },
+  GET_AUTH(state) {
+    return state.authData;
+  },
+  HOST(state) {
+    return state.host;
   }
 }

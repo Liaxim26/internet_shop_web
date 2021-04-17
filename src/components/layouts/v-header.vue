@@ -9,7 +9,12 @@
 			<a class="p-2 text-white font-weight-light" href="">Оплата</a>
 			<a class="p-2 text-white font-weight-light" href="">Контакты</a>
 		</nav>
-		<a id="login" class="mt-1 btn btn-outline-light " href="">Войти</a>		
+    <router-link :to="'login'">
+      <button>Войти</button>
+    </router-link>
+    <router-link :to="'register'">
+      <button>Регистрация</button>
+    </router-link>
 	</div> 
 </div>	
 <div class="mid-header d-flex flex-column flex-md-row align-items-center">

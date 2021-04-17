@@ -16,6 +16,8 @@ let store = new Vuex.Store({
     isMobile: false,
     isDesktop: true,
     products: [],
+    host: 'http://rest-api:8085/api/',
+    authData: null,
     cart: []
   },
   mutations,

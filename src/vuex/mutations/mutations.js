@@ -39,5 +39,8 @@ export default {
     if (state.cart[index].quantity > 1) {
       state.cart[index].quantity--
     }
+  },
+  SET_AUTH: (state, authData) => {
+    state.authData = authData
   }
 }
