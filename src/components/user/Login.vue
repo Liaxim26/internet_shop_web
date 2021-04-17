@@ -1,6 +1,8 @@
 <template>
   <v-app id="inspire">
-    <v-main>
+<p>qweqweqweqwe</p>
+
+    <v-component>
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="3">
@@ -54,7 +56,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-main>
+    </v-component>
   </v-app>
 </template>
 
@@ -101,3 +103,5 @@ export default {
     }
 }
 </script>
+
+

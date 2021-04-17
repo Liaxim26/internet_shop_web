@@ -64,7 +64,14 @@
       vSelect,
       vNotification
     },
-    props: {},
+    props: {
+      category: {
+        type: String,
+        default() {
+          return 'new'
+        }
+      }
+    },
     data() {
       return {
         categories: [
@@ -80,6 +87,7 @@
       }
     },
     computed: {
+      
       ...mapGetters([
         'PRODUCTS',
         'CART',
@@ -88,13 +96,9 @@
         'SEARCH_VALUE'
       ]),
       filteredProducts() {
-        // if (this.sortedProducts.length) {
-        //   return this.sortedProducts
-        // } else {
           console.log(this.PRODUCTS)
           console.log('products')
           return this.PRODUCTS
-        //}
       },
     },
     methods: {
@@ -116,15 +120,6 @@
       sortByCategories(category) {
         let vm = this;
         this.sortedProducts = [...this.PRODUCTS]
-        // this.sortedProducts = this.sortedProducts.filter(function (item) {
-        //   return item.price >= vm.minPrice && item.price <= vm.maxPrice
-        // })
-        // if (category) {
-        //   this.sortedProducts = this.sortedProducts.filter(function (e) {
-        //     vm.selected === category.name;
-        //     return e.category === category.name
-        //   })
-        // }
       },
       addToCart(data) {
         this.ADD_TO_CART(data)
@@ -139,22 +134,9 @@
         this.sortedProducts = [...this.PRODUCTS]
         console.log('sorted')
         console.log(this.sortedProducts)
-        // if (value) {
-        //   this.sortedProducts = this.sortedProducts.filter(function (item) {
-        //     return item.name.toLowerCase().includes(value.toLowerCase())
-        //   })
-        // } else {
-        //   this.sortedProducts = this.PRODUCTS;
-        // }
-      }
-    },
-    watch: {
-      SEARCH_VALUE() {
-        this.sortProductsBySearchValue(this.SEARCH_VALUE);
-      }
-    },
-    mounted() {
-      this.GET_PRODUCTS_FROM_API()
+      },
+      findProducts(category) {
+      this.GET_PRODUCTS_FROM_API(this.category)
         .then((response) => {
           if (response.data) {
             console.log(response)
@@ -162,6 +144,18 @@
             this.sortProductsBySearchValue(this.SEARCH_VALUE)
           }
         })
+    }
+    },  
+    watch: {
+      SEARCH_VALUE() {
+        this.sortProductsBySearchValue(this.SEARCH_VALUE);
+      },
+      '$route'() {
+        this.findProducts(this.category)
+      }
+    },
+    mounted() {
+      this.findProducts(this.category)
     }
   }
 </script>

@@ -19,9 +19,10 @@ let router = new Router({
       component: vMainPage
     },
     {
-      path: '/catalog',
+      path: '/catalog/:category',
       name: 'catalog',
-      component: vCatalog
+      component: vCatalog,
+      props: true
     },
     {
       path: '/product',

@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export default {
-  GET_PRODUCTS_FROM_API({commit}) {
+  GET_PRODUCTS_FROM_API({commit}, category) {
     return axios.get("http://rest-api:8085/api/products", {
       params: {
         page: 1,
         pageSize: 8,
-        category: "pod"
+        category: category
       }
     })
       .then((response) => {

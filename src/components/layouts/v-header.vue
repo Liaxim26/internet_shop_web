@@ -10,10 +10,10 @@
 			<a class="p-2 text-white font-weight-light" href="">Контакты</a>
 		</nav>
     <router-link :to="'login'">
-      <button>Войти</button>
+      <v-btn>Войти</v-btn>
     </router-link>
     <router-link :to="'register'">
-      <button>Регистрация</button>
+      <v-btn>Регистрация</v-btn>
     </router-link>
 	</div> 
 </div>	
@@ -42,9 +42,21 @@
 <div class="menu">
   <nav>
     <a class="text-dark font-weight-bold" href="">Скидки</a>
-    <a class="text-dark font-weight-bold" href="">Новинки</a>
-    <a class="text-dark font-weight-bold" href="">POD-системы</a>
-    <a class="text-dark font-weight-bold" href="">Жидкости</a>
+    <a class="text-dark font-weight-bold">
+       <router-link :to="{name: 'catalog', params: {category: 'new'}}">
+         Новинка
+       </router-link>
+    </a>
+     <a class="text-dark font-weight-bold">
+       <router-link :to="{name: 'catalog', params: {category: 'pod'}}">
+         Pod-системы
+       </router-link>
+    </a>
+    <a class="text-dark font-weight-bold">
+       <router-link :to="{name: 'catalog', params: {category: 'liquid'}}">
+        Жидкости
+       </router-link>
+    </a>
     <a class="text-dark font-weight-bold" href="">Вейпы</a>
     <a class="text-dark font-weight-bold" href="">Атомайзеры</a>
     <a class="text-dark font-weight-bold" href="">Аксессуары</a>
@@ -91,6 +103,9 @@
       ...mapActions([
         'GET_SEARCH_VALUE_TO_VUEX'
       ]),
+      loadCatalog(category){
+        this.$router.push({name: 'catalog', params:{category: category} })
+      },
       search(value) {
         this.GET_SEARCH_VALUE_TO_VUEX(value);
         if (this.$route.path !== '/catalog') {
@@ -154,7 +169,7 @@
     padding-right: 33.5px;
   }
   .menu > nav >a{	
-    float: left;
+   // float: left;
     width: 14.27%;
     padding: 10px;
     text-align: center;
