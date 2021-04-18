@@ -4,16 +4,19 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
+    <v-footer />
   </div>
 </template>
 
 <script>
   import vHeader from './layouts/v-header'
+  import vFooter from './layouts/v-footer'
 
   export default {
     name: 'v-main-wrapper',
     components: {
-      vHeader
+      vHeader,
+      vFooter
     },
     props: {},
     data() {
