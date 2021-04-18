@@ -94,7 +94,7 @@
     margin-bottom: $margin*2;
 
     &__image {
-      width: 100px;
+      width: 150px;
     }
   }
 </style>

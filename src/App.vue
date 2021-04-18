@@ -1,44 +1,23 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href class="navbar-brand" @click.prevent>bezKoder</a>
       <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/home" class="nav-link">
-            <font-awesome-icon icon="home" />Скидки
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{name: 'catalog', params: {category: 'new'}}" class="nav-link">
-            <font-awesome-icon icon="home" />Новинка
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{name: 'catalog', params: {category: 'pod'}}" class="nav-link">
-            <font-awesome-icon icon="home" />Pod-системы
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{name: 'catalog', params: {category: 'liquid'}}" class="nav-link">
-            <font-awesome-icon icon="home" />Жидкости
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{name: 'catalog', params: {category: 'liquid'}}" class="nav-link">
-            <font-awesome-icon icon="home" />Home
-          </router-link>
-        </li>
+        <li class="nav-item nav-link">О компании</li>
+        <li class="nav-item nav-link">Бренды</li>
+        <li class="nav-item nav-link">Доставка</li>
+        <li class="nav-item nav-link">Оплата</li>
+        <li class="nav-item nav-link">Контакты</li>
       </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/register" class="nav-link">
-            <font-awesome-icon icon="user-plus" />Sign Up
+            Регистрация
           </router-link>
         </li>
         <li class="nav-item">
           <router-link to="/login" class="nav-link">
-            <font-awesome-icon icon="sign-in-alt" />Login
+            Вход
           </router-link>
         </li>
       </div>
@@ -46,15 +25,44 @@
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/profile" class="nav-link">
-            <font-awesome-icon icon="user" />
-            {{ currentUser.username }}
+            Профиль
           </router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href @click.prevent="logOut">
-            <font-awesome-icon icon="sign-out-alt" />LogOut
+            Выход
           </a>
         </li>
+      </div>
+    </nav>
+  
+    <div>
+      <router-link :to="{name: 'mainPage'}">
+        <img src="./assets/logo.jpg" alt="logo"> 
+      </router-link>
+    </div>  
+
+    <nav class="navbar navbar-expand navbar-light bg-light">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link">Скидки</a>
+        <a class="nav-item">
+          <router-link :to="{name: 'catalog', params: {category: 'new'}}" class="nav-link">
+            <font-awesome-icon icon="home" />Новинка
+          </router-link>
+        </a>
+        <a class="nav-item">
+          <router-link :to="{name: 'catalog', params: {category: 'pod'}}" class="nav-link">
+            <font-awesome-icon icon="home" />Pod-системы
+          </router-link>
+        </a>
+        <a class="nav-item">
+          <router-link :to="{name: 'catalog', params: {category: 'liquid'}}" class="nav-link">
+            <font-awesome-icon icon="home" />Жидкости
+          </router-link>
+        </a>
+        <a class="nav-item nav-link">Вейпы</a>
+        <a class="nav-item nav-link">Атомайзеры</a>
+        <a class="nav-item nav-link">Аксессуары</a>
       </div>
     </nav>
 
@@ -117,14 +125,12 @@ export default {
       if (this.currentUser && this.currentUser.roles) {
         return this.currentUser.roles.includes('ROLE_ADMIN');
       }
-
       return false;
     },
     showModeratorBoard() {
       if (this.currentUser && this.currentUser.roles) {
         return this.currentUser.roles.includes('ROLE_MODERATOR');
       }
-
       return false;
     }
   },
@@ -147,4 +153,5 @@ export default {
   /*margin-top: 160px;*/
 }
 @import url('../node_modules/vuetify/dist/vuetify.min.css');
+
 </style> 

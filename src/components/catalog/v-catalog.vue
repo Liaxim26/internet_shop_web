@@ -9,14 +9,13 @@
     <router-link :to="{name: 'cart', params: {cart_data: CART}}">
       <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div> 
     </router-link>
-    <h1>Catalog</h1>
-    <div class="filters">
-      <v-select
+      <div class="filters">
+    <!--  <v-select
           :selected="selected"
           :options="categories"
           @select="sortByCategories"
-      />
-      <div class="range-slider">
+      /> -->
+     <!-- <div class="range-slider">
         <input
             type="range"
             min="0"
@@ -33,11 +32,11 @@
             v-model.number="maxPrice"
             @change="setRangeSlider"
         >
-      </div>
-      <div class="range-values">
+      </div>-->
+     <!-- <div class="range-values">
         <p>Min: {{minPrice}}</p>
         <p>Max: {{maxPrice}}</p>
-      </div>
+      </div> -->
     </div>
     <div class="v-catalog__list">
       <v-catalog-item
@@ -62,7 +61,7 @@
     name: "v-catalog",
     components: {
       vCatalogItem,
-      vSelect,
+      //vSelect,
       vNotification
     },
     props: {
