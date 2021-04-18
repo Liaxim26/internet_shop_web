@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import { auth } from './auth.module'
 import commonActions from './actions/actions'
 import apiRequests from './actions/api-requests'
 import mutations from "./mutations/mutations"
@@ -19,6 +20,9 @@ let store = new Vuex.Store({
     host: 'http://rest-api:8085/api/',
     authData: null,
     cart: []
+  },
+  modules: {
+    auth
   },
   mutations,
   actions,

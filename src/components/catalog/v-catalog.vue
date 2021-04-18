@@ -52,6 +52,7 @@
 </template>
 
 <script>
+  import axios from 'axios' 
   import vCatalogItem from './v-catalog-item'
   import {mapActions, mapGetters} from 'vuex'
   import vSelect from '../v-select'
@@ -122,13 +123,41 @@
         this.sortedProducts = [...this.PRODUCTS]
       },
       addToCart(data) {
-        this.ADD_TO_CART(data)
-          .then(() => {
-            let timeStamp = Date.now().toLocaleString();
+        //this.ADD_TO_CART(data)
+        var cart = this.CART
+        var alreadyContains
+        for (let item in cart) {
+          if (item.id == data.id) {
+            alreadyContains = true
+          }
+        }
+        if (alreadyContains) {
+          return;
+        }
+
+        let body = {
+          productId: data.id,
+          quantity: 1
+        }
+
+        let authData = this.$store.getters.GET_AUTH
+        let config = {
+          headers: {
+            Authorization: 'Bearer ' + authData.token
+          }
+        }
+        
+        axios.post(this.$store.getters.HOST + '', body, config)
+        .then(res => {
+           let timeStamp = Date.now().toLocaleString();
             this.messages.unshift(
               {name: 'Товар добавлен в корзину', icon: 'check_circle', id: timeStamp}
             )
-          })
+          console.log(res)
+        })
+        .catch(err => {
+          console.error(err.response); 
+        })
       },
       sortProductsBySearchValue(value) {
         this.sortedProducts = [...this.PRODUCTS]

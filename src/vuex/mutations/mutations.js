@@ -14,15 +14,15 @@ export default {
     state.products = products;
   },
   SET_CART: (state, product) => {
-    let isProductExists = false;
+    let alreadyContains = false;
     if (state.cart.length) {
       state.cart.map(function (item) {
-        if (item.article === product.article) {
-          isProductExists = true;
+        if (item.id === product.id) {
+          alreadyContains = true;
           item.quantity++
         }
       })
-      if (!isProductExists) {
+      if (!alreadyContains) {
         state.cart.push(product)
       }
     } else {
@@ -42,5 +42,7 @@ export default {
   },
   SET_AUTH: (state, authData) => {
     state.authData = authData
+    localStorage.setItem('userId', authData.userId)
+    localStorage.setItem('token', authData.token)
   }
 }

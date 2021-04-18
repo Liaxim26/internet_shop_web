@@ -1,107 +1,129 @@
 <template>
-  <v-app id="inspire">
-<p>qweqweqweqwe</p>
-
-    <v-component>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="3">
-            <v-card class="elevation-12">
-              <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Login form</v-toolbar-title>
-                <v-spacer />
-              </v-toolbar>
-              <v-card-text>
-                <v-form @submit.prevent="onLogin" v-model="isFormValid">
-                  <v-text-field
-                    input
-                    id="login"
-                    label="Login"
-                    name="login"
-                    v-model="login"
-                    :prepend-icon="'mdi-email'"
-                    type="email"
-                    :rules="[rules.required]"
-                    required
-                  />
-                  <v-text-field
-                    id="password"
-                    label="Password"
-                    name="password"
-                    v-model="password"
-                    :prepend-icon="'mdi-lock'"
-                    type="password"
-                    :rules="[rules.required]"
-                    required
-                  />
-                  <div class="d-flex">
-                      <div v-if="authErr" class="ma-2" style="color:#b11b1b">
-                        Wrong email or password
-                      </div>
-                      <v-layout>
-                        <v-spacer />
-                        <v-btn
-                          color="primary"
-                          type="submit"
-                          :loading="load"
-                          :disabled="load || !isFormValid"
-                          >
-                              Log in
-                        </v-btn>
-                      </v-layout>
-                  </div>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-component>
-  </v-app>
+  <div class="col-md-12">
+    <div class="card card-container">
+      <img
+        id="profile-img"
+        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+        class="profile-img-card"
+      />
+      <form name="form" @submit.prevent="handleLogin">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            v-model="user.login"
+            type="text"
+            class="form-control"
+            name="username"
+          />
+          <!-- <div
+            class="alert alert-danger"
+            role="alert"
+          >Username is required!</div> -->
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            v-model="user.password"
+            type="password"
+            class="form-control"
+            name="password"
+          />
+          <!-- <div
+            class="alert alert-danger"
+            role="alert"
+          >Password is required!</div> -->
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary btn-block" :disabled="loading">
+            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+            <span>Login</span>
+          </button>
+        </div>
+        <div class="form-group">
+          <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios'
+import User from '../models/user';
+
 export default {
-    name: 'LoginPage',
-    data() {
-        return {
-        login : '',
-        password  : '',
-        authErr : false,
-        load : false,
-        isFormValid : false,
-        rules: {
-          required: value => !!value || 'Required.'
-        }}
-    },
-    methods:  {
-        onLogin() {
-            console.log("login " + this.login)
-            console.log("password " + this.password)
-            this.load = true
-            console.log('load', this.load)
-            axios.post(this.$store.getters.HOST + 'login', {
-                    login: this.login,
-                    password: this.password
-            })
-            .then(response => {
-                console.log(response)
-                this.$store.commit('SET_AUTH', response.data.token)
-                let authData = this.$store.getters.GET_AUTH
-                console.log(authData)
-            })
-            .catch(ex => {
-                console.error('onauth ex: ', ex)
-                this.authErr = true
-            })
-            .finally(() => {
-              this.load = false
-              console.log('load', this.load)
-            })
-        }
+  name: 'Login',
+  data() {
+    return {
+      user: new User('', ''),
+      loading: false,
+      message: ''
+    };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
     }
-}
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push('/profile');
+    }
+  },
+  methods: {
+    handleLogin() {
+      this.loading = true;
+      if (this.user.login && this.user.password) {
+        this.$store.dispatch('auth/login', this.user).then(
+          () => {
+            //console.log('login success')
+            this.$router.push('/profile');
+          },
+          error => {
+            //console.log('login suck')
+            this.loading = false;
+            this.message =
+              (error.response && error.response.data && error.response.data.message) ||
+              error.message ||
+              error.toString();
+          }
+        );
+      }
+    }
+  }
+};
 </script>
 
+<style scoped>
+label {
+  display: block;
+  margin-top: 10px;
+}
 
+.card-container.card {
+  max-width: 350px !important;
+  padding: 40px 40px;
+}
+
+.card {
+  background-color: #f7f7f7;
+  padding: 20px 25px 30px;
+  margin: 0 auto 25px;
+  margin-top: 50px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img-card {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+</style>

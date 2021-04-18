@@ -10,8 +10,9 @@
 			<a class="p-2 text-white font-weight-light" href="">Контакты</a>
 		</nav>
     <router-link :to="'login'">
-      <v-btn>Войти</v-btn>
+      <v-btn v-if="isNotLogin">Войти</v-btn>
     </router-link>
+    <v-btn v-if="isLogin" @click="logout">Выйти</v-btn>
     <router-link :to="'register'">
       <v-btn>Регистрация</v-btn>
     </router-link>
@@ -97,7 +98,17 @@
     computed: {
       ...mapGetters([
         'SEARCH_VALUE'
-      ])
+      ]),
+      isNotLogin() {
+        let auth = this.$store.getters.GET_AUTH
+        console.log('auth true ' + auth)
+        return auth == null
+      },
+      isLogin() {
+        let auth = this.$store.getters.GET_AUTH
+        console.log('auth true ' + auth)
+        return auth != null
+      }
     },
     methods: {
       ...mapActions([
@@ -105,6 +116,16 @@
       ]),
       loadCatalog(category){
         this.$router.push({name: 'catalog', params:{category: category} })
+      },
+      isLogged() {
+        let auth = this.$store.getters.GET_AUTH
+        console.log('auth true ' + auth)
+        return auth != null
+      },
+      logout() {
+        console.log('log out')
+        this.$store.commit('SET_AUTH', null)
+        console.log(this.$store.getters.GET_AUTH)
       },
       search(value) {
         this.GET_SEARCH_VALUE_TO_VUEX(value);
