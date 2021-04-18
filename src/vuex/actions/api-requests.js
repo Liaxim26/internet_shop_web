@@ -1,13 +1,9 @@
 import axios from "axios";
 
 export default {
-  GET_PRODUCTS_FROM_API({commit}, category) {
+  GET_PRODUCTS_FROM_API({commit}, parameters) {
     return axios.get("http://rest-api:8085/api/products", {
-      params: {
-        page: 1,
-        pageSize: 8,
-        category: category
-      }
+      params: parameters
     })
       .then((response) => {
         console.log(response.data.products)

@@ -10,16 +10,25 @@
       <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div> 
     </router-link>
       <div class="filters">
-    <!--  <v-select
-          :selected="selected"
-          :options="categories"
-          @select="sortByCategories"
-      /> -->
-     <!-- <div class="range-slider">
+     <v-select
+          v-model="sortParameters"
+          :items="sortOptions"
+          item-text="name"
+
+          
+          @select="sort"
+          return-object
+          
+      />
+      <p>Сортировать</p>
+      <select v-model="sortParameters" @change="sort($event)">
+        <option v-for="sortOption in sortOptions" :key="sortOption.name" v-bind:value="sortOption">{{ sortOption.name }}</option>
+      </select>
+     <div class="range-slider">
         <input
             type="range"
             min="0"
-            max="1000"
+            max="4000"
             step="10"
             v-model.number="minPrice"
             @change="setRangeSlider"
@@ -32,11 +41,11 @@
             v-model.number="maxPrice"
             @change="setRangeSlider"
         >
-      </div>-->
-     <!-- <div class="range-values">
+      </div>
+     <div class="range-values">
         <p>Min: {{minPrice}}</p>
         <p>Max: {{maxPrice}}</p>
-      </div> -->
+      </div>
     </div>
     <div class="v-catalog__list">
       <v-catalog-item
@@ -47,6 +56,16 @@
           @productClick="productClick"
       />
     </div>
+    <v-pagination
+      v-model="page"
+      :length="totalPages"
+      total-visible="10"
+      @input="findProducts()">
+    </v-pagination>
+    <p>Размер страницы</p>
+    <select v-model="pageSize" @change="changePageSize($event.target.value)">
+      <option v-for="pageSizeOption in pageSizeOptions" v-bind:key="pageSizeOption">{{ pageSizeOption }}</option>
+    </select>
   </div>
 </template>
 
@@ -61,7 +80,7 @@
     name: "v-catalog",
     components: {
       vCatalogItem,
-      //vSelect,
+      vSelect,
       vNotification
     },
     props: {
@@ -74,13 +93,16 @@
     },
     data() {
       return {
-        categories: [
-          {name: 'Все', value: 'ALL'},
-          {name: 'Мужские', value: 'м'},
-          {name: 'Женские', value: 'ж'},
+        sortOptions: [
+          { name: 'Цена по возрастанию', code: 'price', direction: 'ASC' },
+          { name: 'Цена по убыванию', code: 'price', direction: 'DESC' }
         ],
-        selected: 'Все',
+        sortParameters: { name: 'Цена по возрастанию', code: 'price', direction: 'ASC' },
         sortedProducts: [],
+        page: 1,
+        pageSize: 10,
+        pageSizeOptions: [5, 10, 20, 40, 60, 100],
+        totalPages: 1,
         minPrice: 0,
         maxPrice: 10000,
         messages: []
@@ -115,7 +137,18 @@
           this.maxPrice = this.minPrice;
           this.minPrice = tmp;
         }
-        this.sortByCategories()
+        this.findProducts()
+      },
+      sort(event) {
+        console.log(event)
+        let sortParams = event.target.value
+        console.log(sortParams)
+        this.sortParameters = event.target.value
+        console.log(this.sortParameters)
+      },
+      changePageSize(newSize) {
+        this.pageSize = newSize
+        this.findProducts()
       },
       sortByCategories(category) {
         let vm = this;
@@ -163,15 +196,25 @@
         console.log('sorted')
         console.log(this.sortedProducts)
       },
-      findProducts(category) {
-      this.GET_PRODUCTS_FROM_API(this.category)
-        .then((response) => {
-          if (response.data) {
-            console.log(response)
-            this.sortByCategories()
-            this.sortProductsBySearchValue(this.SEARCH_VALUE)
-          }
-        })
+      findProducts() {
+        let parameters = {
+          page: this.page,
+          pageSize: this.pageSize,
+          sortField: this.sortParameters.code,
+          sortDirection: this.sortParameters.direction,
+          category: this.category,
+          minPrice: this.minPrice,
+          maxPrice: this.maxPrice
+        }
+        this.GET_PRODUCTS_FROM_API(parameters)
+          .then((response) => {
+            if (response.data) {
+              console.log(response)
+              this.totalPages = Math.ceil(response.data.totalNumber / this.pageSize)
+              this.sortByCategories()
+              this.sortProductsBySearchValue(this.SEARCH_VALUE)
+            }
+          })
     }
     },  
     watch: {
@@ -179,11 +222,11 @@
         this.sortProductsBySearchValue(this.SEARCH_VALUE);
       },
       '$route'() {
-        this.findProducts(this.category)
+        this.findProducts()
       }
     },
     mounted() {
-      this.findProducts(this.category)
+      this.findProducts()
     }
   }
 </script>
