@@ -76,6 +76,8 @@
         this.isInfoPopupVisible = false;
       },
       addToCart() {
+        console.log(this.product_data)
+        console.log('product data')
         this.$emit('addToCart', this.product_data);
       }
     },

@@ -1,44 +1,23 @@
 export default {
-  SET_SEARCH_VALUE_TO_VUEX: (state, value) => {
-    state.searchValue = value;
-  },
-  SWITCH_MOBILE: (state) => {
-    state.isMobile = true;
-    state.isDesktop = false;
-  },
-  SWITCH_DESKTOP: (state) => {
-    state.isMobile = false;
-    state.isDesktop = true;
-  },
   SET_PRODUCTS_TO_STATE: (state, products) => {
     state.products = products;
   },
-  SET_CART: (state, product) => {
-    let alreadyContains = false;
-    if (state.cart.length) {
-      state.cart.map(function (item) {
-        if (item.id === product.id) {
-          alreadyContains = true;
-          item.quantity++
-        }
-      })
-      if (!alreadyContains) {
-        state.cart.push(product)
-      }
-    } else {
-      state.cart.push(product)
-    }
+  ADD_ITEM: (state, cartItem) => {
+    state.cart.push(cartItem)
   },
-  REMOVE_FROM_CART: (state, index) => {
-    state.cart.splice(index, 1)
+  SET_CART_ITEMS: (state, cart) => {
+    state.cart = cart
   },
-  INCREMENT: (state, index) => {
-    state.cart[index].quantity++
+  REMOVE_ITEM: (state, cartItem) => {
+    state.cart = state.cart.filter((item) => item.product.id != cartItem.product.id)
   },
-  DECREMENT: (state, index) => {
-    if (state.cart[index].quantity > 1) {
-      state.cart[index].quantity--
-    }
+  INCREMENT: (state, cartItem) => {
+    let item = state.cart.filter((item) => item.product.id == cartItem.product.id)
+    item[0].quantity += 1
+  },
+  DECREMENT: (state, cartItem) => {
+    let item = state.cart.filter((item) => item.product.id == cartItem.product.id)
+    item[0].quantity -= 1
   },
   SET_AUTH: (state, authData) => {
     state.authData = authData

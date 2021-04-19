@@ -6,7 +6,7 @@
     />
 
 
-    <router-link :to="{name: 'cart', params: {cart_data: CART}}">
+    <router-link :to="{name: 'cart'}">
       <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div> 
     </router-link>
       <div class="filters">
@@ -49,7 +49,7 @@
     </div>
     <div class="v-catalog__list">
       <v-catalog-item
-          v-for="product in filteredProducts"
+          v-for="product in products"
           :key="product.article"
           :product_data="product"
           @addToCart="addToCart"
@@ -117,9 +117,7 @@
         'IS_DESKTOP',
         'SEARCH_VALUE'
       ]),
-      filteredProducts() {
-          console.log(this.PRODUCTS)
-          console.log('products')
+      products() {
           return this.PRODUCTS
       },
     },
@@ -155,41 +153,19 @@
         this.sortedProducts = [...this.PRODUCTS]
       },
       addToCart(data) {
-        //this.ADD_TO_CART(data)
-        var cart = this.CART
-        var alreadyContains
-        for (let item in cart) {
-          if (item.id == data.id) {
-            alreadyContains = true
-          }
-        }
-        if (alreadyContains) {
-          return;
-        }
-
-        let body = {
-          productId: data.id,
-          quantity: 1
-        }
-
-        let authData = this.$store.getters.GET_AUTH
-        let config = {
-          headers: {
-            Authorization: 'Bearer ' + authData.token
-          }
-        }
-        
-        axios.post(this.$store.getters.HOST + '', body, config)
-        .then(res => {
-           let timeStamp = Date.now().toLocaleString();
-            this.messages.unshift(
-              {name: 'Товар добавлен в корзину', icon: 'check_circle', id: timeStamp}
-            )
-          console.log(res)
-        })
-        .catch(err => {
-          console.error(err.response); 
-        })
+        console.log(data)
+        let response = this.ADD_TO_CART({userId: this.$store.state.auth.user.userId, product: data})
+          .then(res => {
+            if (res) {
+            let timeStamp = Date.now().toLocaleString();
+              this.messages.unshift(
+                {name: 'Товар добавлен в корзину', icon: 'check_circle', id: timeStamp}
+              )
+            }
+          })
+          .catch(err => {
+            console.error(err.response); 
+          })
       },
       sortProductsBySearchValue(value) {
         this.sortedProducts = [...this.PRODUCTS]

@@ -8,6 +8,9 @@ export default  {
   IS_DESKTOP(state) {
     return state.isDesktop;
   },
+  USER_ID(state) {
+    return state.auth.user.user_id;
+  },
   PRODUCTS(state) {
     console.log(state)
     return state.products;

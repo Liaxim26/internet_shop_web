@@ -1,10 +1,10 @@
 <template>
   <div class='v-cart-item'>
-    <img class="v-cart-item__image" :src=" require('../../assets/images/' + cart_item_data.image) " alt="">
+    <img class="v-cart-item__image" :src="cart_item_data.product.image" alt="">
     <div class="v-cart-item__info">
-      <p>{{cart_item_data.name}}</p>
-      <p>{{cart_item_data.price | toFix | formattedPrice}}</p>
-      <p>{{cart_item_data.article}}</p>
+      <p>{{cart_item_data.product.name}}</p>
+      <p>{{cart_item_data.product.price | toFix | formattedPrice}}</p>
+      <p>{{cart_item_data.product.id}}</p>
     </div>
     <div class="v-cart-item__quantity">
       <p>Qty:</p>

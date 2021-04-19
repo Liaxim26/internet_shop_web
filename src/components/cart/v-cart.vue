@@ -4,14 +4,14 @@
       <div class="v-catalog__link_to_cart">Back to Catalog</div>
     </router-link>
     <h1>Cart</h1>
-    <p v-if="!cart_data.length">There are no products in cart...</p>
+    <p v-if="!CART.length">There are no products in cart...</p>
     <v-cart-item
-        v-for="(item, index) in cart_data"
-        :key="item.article"
+        v-for="item in CART"
+        :key="item.product.id"
         :cart_item_data="item"
-        @deleteFromCart="deleteFromCart(index)"
-        @increment="increment(index)"
-        @decrement="decrement(index)"
+        @deleteFromCart="deleteFromCart(item)"
+        @increment="increment(item)"
+        @decrement="decrement(item)"
     />
     <div class="v-cart__total">
       <p class="total__name">Total:</p>
@@ -22,9 +22,10 @@
 
 <script>
   import vCartItem from './v-cart-item'
+  import CartService from '../../cart.service'
   import toFix from "../../filters/toFix";
   import formattedPrice from "../../filters/price-format";
-  import {mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: "v-cart",
@@ -32,27 +33,27 @@
       vCartItem
     },
     props: {
-      cart_data: {
-        type: Array,
-        default() {
-          return []
-        }
-      }
+      
     },
     data() {
-      return {}
+      return {
+        cart_data: this.CART
+      }
     },
     filters: {
       formattedPrice,
       toFix
     },
     computed: {
+      ...mapGetters([
+        'CART'
+      ]),
       cartTotalCost() {
         let result = []
 
-        if (this.cart_data.length) {
-          for (let item of this.cart_data) {
-            result.push(item.price * item.quantity)
+        if (this.CART.length) {
+          for (let item of this.CART) {
+            result.push(item.product.price * item.quantity)
           }
 
           result = result.reduce(function (sum, el) {
@@ -68,17 +69,34 @@
       ...mapActions([
         'DELETE_FROM_CART',
         'INCREMENT_CART_ITEM',
-        'DECREMENT_CART_ITEM'
+        'DECREMENT_CART_ITEM',
+        'LOAD_CART'
       ]),
-      increment(index) {
-        this.INCREMENT_CART_ITEM(index)
+      increment(item) {
+        this.INCREMENT_CART_ITEM(item)
       },
-      decrement(index) {
-        this.DECREMENT_CART_ITEM(index)
+      decrement(item) {
+        this.DECREMENT_CART_ITEM(item)
       },
-      deleteFromCart(index) {
-        this.DELETE_FROM_CART(index)
+      deleteFromCart(item) {
+        this.DELETE_FROM_CART(item)
+      },
+      findItems() {
+        var userId = this.$store.state.auth.user.userId
+        console.log(userId)
+
+        if (userId) {
+          this.LOAD_CART(userId)
+        }
       }
+    },
+    watch: {
+      '$route'() {
+        this.findItems()
+      }
+    },
+    mounted() {
+      this.findItems()
     }
   }
 </script>
