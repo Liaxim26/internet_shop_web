@@ -50,8 +50,8 @@
     <div class="v-catalog__list">
       <v-catalog-item
           v-for="product in products"
-          :key="product.article"
-          :product_data="product"
+          :key="product.id"
+          :productData="product"
           @addToCart="addToCart"
           @productClick="productClick"
       />
@@ -154,18 +154,25 @@
       },
       addToCart(data) {
         console.log(data)
-        let response = this.ADD_TO_CART({userId: this.$store.state.auth.user.userId, product: data})
+        if (this.hasItemWithProduct(this.CART, data.id)) {
+          return
+        } 
+        this.ADD_TO_CART({userId: this.$store.state.auth.user.userId, product: data})
           .then(res => {
-            if (res) {
             let timeStamp = Date.now().toLocaleString();
               this.messages.unshift(
                 {name: 'Товар добавлен в корзину', icon: 'check_circle', id: timeStamp}
               )
-            }
           })
           .catch(err => {
             console.error(err.response); 
           })
+      },
+      hasItemWithProduct(cart, productId) {
+        console.log(cart)
+        let filtered = cart.filter(item => item.product.id == productId)
+        console.log(filtered)
+        return filtered.length > 0
       },
       sortProductsBySearchValue(value) {
         this.sortedProducts = [...this.PRODUCTS]
@@ -187,8 +194,6 @@
             if (response.data) {
               console.log(response)
               this.totalPages = Math.ceil(response.data.totalNumber / this.pageSize)
-              this.sortByCategories()
-              this.sortProductsBySearchValue(this.SEARCH_VALUE)
             }
           })
     }

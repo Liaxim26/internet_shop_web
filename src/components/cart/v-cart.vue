@@ -22,7 +22,7 @@
 
 <script>
   import vCartItem from './v-cart-item'
-  import CartService from '../../cart.service'
+  import CartService from '../../service/cart.service'
   import toFix from "../../filters/toFix";
   import formattedPrice from "../../filters/price-format";
   import {mapActions, mapGetters} from 'vuex'

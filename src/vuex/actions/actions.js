@@ -1,21 +1,12 @@
-import CartService from '../../cart.service'
+import CartService from '../../service/cart.service'
 
 export default {
   ADD_TO_CART({commit}, cartItem) {
     console.log(cartItem)
-    let result = CartService.addItem(cartItem.userId, cartItem.product)
-    console.log(result)
-    if (result != null) {
-      return result
-      .then((cartItem) => {
+    return CartService.addItem(cartItem.userId, cartItem.product)
+      .then((response) => {
         commit('ADD_ITEM', cartItem);
-        return true
       })
-    }
-
-    console.log('aaa')
-
-    return null
   },
   LOAD_CART({commit}, userId) {
     return CartService.loadCart(userId)

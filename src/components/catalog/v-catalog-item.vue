@@ -4,24 +4,22 @@
     <v-popup
         v-if="isInfoPopupVisible"
         rightBtnTitle="Add to cart"
-        :popupTitle="product_data.name"
+        :popupTitle="productData.name"
         @closePopup="closeInfoPopup"
         @rightBtnAction="addToCart"
     >
-      <!-- <img class="v-catalog-item__image" :src=" require('../../assets/images/' + product_data.image) " alt="img"> -->
-      <img class="v-catalog-item__image" :src="product_data.image" alt="img">
+      <img class="v-catalog-item__image" :src="productData.image" alt="img">
       <div>
-        <p class="v-catalog-item__name">{{product_data.name}}</p>
-        <p class="v-catalog-item__price">Price: {{product_data.price | toFix | formattedPrice}} Р.</p>
-        <p class="v-catalog-item__price">{{product_data.category}}</p>
+        <p class="v-catalog-item__name">{{productData.name}}</p>
+        <p class="v-catalog-item__price">Price: {{productData.price | toFix | formattedPrice}} Р.</p>
+        <p class="v-catalog-item__price">{{productData.category}}</p>
       </div>
     </v-popup>
 
 
-    <!-- <img class="v-catalog-item__image" :src=" require('../../assets/images/' + product_data.image) " alt="img" @click="productClick"> -->
-    <img class="v-catalog-item__image" :src="product_data.image" alt="img" @click="productClick">
-    <p class="v-catalog-item__name">{{product_data.name}}</p>
-    <p class="v-catalog-item__price">Price: {{product_data.price | toFix | formattedPrice}}</p>
+    <img class="v-catalog-item__image" :src="productData.image" alt="img" @click="productClick">
+    <p class="v-catalog-item__name">{{productData.name}}</p>
+    <p class="v-catalog-item__price">Price: {{productData.price | toFix | formattedPrice}}</p>
     <button
         class="v-catalog-item__show-info"
         @click="showPopupInfo"
@@ -48,7 +46,7 @@
       vPopup
     },
     props: {
-      product_data: {
+      productData: {
         type: Object,
         default() {
           return {}
@@ -67,7 +65,7 @@
     computed: {},
     methods: {
       productClick() {
-        this.$emit('productClick', this.product_data.article)
+        this.$emit('productClick', this.productData.article)
       },
       showPopupInfo() {
         this.isInfoPopupVisible = true;
@@ -76,14 +74,11 @@
         this.isInfoPopupVisible = false;
       },
       addToCart() {
-        console.log(this.product_data)
-        console.log('product data')
-        this.$emit('addToCart', this.product_data);
+        this.$emit('addToCart', this.productData);
       }
     },
     mounted() {
-      this.$set(this.product_data, 'quantity', 1)
-      console.log(this.product_data)
+      console.log(this.productData)
     }
   }
 </script>
